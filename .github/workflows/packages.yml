@@ -1,0 +1,23 @@
+name: Update packages list
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run a multi-line script
+        run: |
+          rm -f "$GITHUB_WORKSPACE/Packages"
+          wget -P "$GITHUB_WORKSPACE" https://www.plasticscm.com/plasticrepo/stable/debian/Packages
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
